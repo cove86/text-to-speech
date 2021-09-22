@@ -1,0 +1,188 @@
+#:import utils kivy.utils
+
+<FileChoosePopup>:
+    auto_dismiss: True
+    size_hint: 0.5, 0.75
+    title: "File Browser"
+
+    BoxLayout:
+        orientation: "vertical"
+        FileChooser:
+            id: filechooser
+            path: "/"
+            FileChooserListLayout
+
+        BoxLayout:
+            orientation: "horizontal"
+            spacing: 20
+            size_hint: 1, .3
+
+            Button:
+                text:"Back"
+                size_hint: 1, .3
+                background_normal:""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_release: root.dismiss()
+
+            Button:
+                text: "Select"
+                size_hint: 1, .3
+                background_normal:""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_release: root.load(filechooser.selection)
+                disabled: True if filechooser.selection==[] else False
+
+ScreenMan:
+    ScreenOne:
+    ScreenTwo:
+
+<ScreenOne>
+    name: "home"
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex("#476072")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        size: root.width, root.height
+        spacing: 20
+        padding: 10
+
+        Image:
+            source: "images/bg.jpeg"
+            allow_stretch: True
+            keep_ratio: False
+
+        GridLayout:
+            rows: 1
+            cols: 3
+            spacing: 20
+            padding: 10
+            size_hint: 1, .5
+
+            Button:
+                text: "Open File"
+                font_size: 16
+                background_normal:""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_press: root.reset_text()
+                on_release: root.open_popup()
+
+            Button:
+                text: "Create File"
+                font_size: 16
+                background_normal:""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_press: root.reset_text()
+                on_release:
+                    app.root.current = "text"
+                    root.manager.transition.direction = "left"
+
+            Button:
+                id: play
+                text: "Play File"
+                font_size: 16
+                background_normal: ""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_press: root.play()
+
+        GridLayout:
+            rows: 1
+            cols: 3
+            spacing: 20
+            padding: 10
+            size_hint: 1, .5
+
+            Label:
+                id: selected_file
+                text: "Filename"
+                color: "#334257"
+                pos_hint: {"top": 1}
+                canvas.before:
+                    Color:
+                        rgba: utils.get_color_from_hex("#EEEEEE")
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+            Button:
+                id: convert_button
+                text: "Convert"
+                font_size: 16
+                pos_hint: {"top": 1}
+                background_normal: ""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_press: root.convert()
+
+
+            Button:
+                id: clear_button
+                text: "Clear Filename"
+                font_size: 16
+                pos_hint: {"top": 1}
+                background_normal: ""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_press: root.clear()
+
+
+
+
+
+
+<ScreenTwo>:
+    name: "text"
+    user_text:user_text
+    file_name: file_name
+
+    canvas.before:
+        Color:
+            rgba: utils.get_color_from_hex("#476072")
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    BoxLayout:
+        orientation: "vertical"
+        padding: 20
+        spacing: 10
+
+        Label:
+            text:"Enter Filename and Text Below"
+            font_size: 16
+
+
+        TextInput:
+            id: file_name
+            multiline: False
+            size_hint: 1, .2
+            hint_text: "Type Filename Here"
+
+        TextInput:
+            id: user_text
+            multiline: True
+            hint_text: "Type Text Here"
+
+        BoxLayout:
+            orientation: "horizontal"
+            padding: 50
+            spacing: 20
+
+            Button:
+                text:"Back"
+                font_size: 16
+                background_normal: ""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_release:
+                    app.root.current = "home"
+                    root.manager.transition.direction = "right"
+
+            Button:
+                text:"Save File"
+                font_size: 16
+                background_normal: ""
+                background_color: utils.get_color_from_hex("#548CA8")
+                on_press: root.save_file()
+
