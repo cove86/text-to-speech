@@ -69,7 +69,7 @@ class ScreenOne(Screen):
     def reset_text(self):
         self.ids.convert_button.text = "Convert"
         self.ids.play.text = "Play File"
-        self.file_path = ""
+
 
     # Plays selected file if MP3 using default Media Player
     def play(self):
@@ -85,7 +85,9 @@ class ScreenOne(Screen):
 
     def clear(self):
         self.reset_text()
+        self.ids.selected_file.text = "Filename"
         self.file_path = None
+
 
 # Screen to input text and save as file
 class ScreenTwo(Screen):
