@@ -3,7 +3,6 @@ from kivy.lang import Builder
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.core.window import Window
 from polly import Polly
 from document_manager import DocumentManager
 import os
@@ -71,6 +70,7 @@ class ScreenOne(Screen):
         self.ids.convert_button.text = "Convert"
         self.ids.play.text = "Play File"
 
+
     # Plays selected file if MP3 using default Media Player
     def play(self):
         try:
@@ -80,11 +80,14 @@ class ScreenOne(Screen):
                 # The following works on macOS and Linux. (Darwin = mac, xdg-open = linux).
                 opener = "open" if sys.platform == "darwin" else "xdg-open"
                 subprocess.call([opener, self.file_path])
-        except AttributeError:
+        except (AttributeError, TypeError):
             self.ids.play.text = "File Not Selected"
 
     def clear(self):
-        self.ids.selected_file.text = ""
+        self.reset_text()
+        self.ids.selected_file.text = "Filename"
+        self.file_path = None
+
 
 # Screen to input text and save as file
 class ScreenTwo(Screen):
