@@ -80,7 +80,7 @@ class ScreenOne(Screen):
                 # The following works on macOS and Linux. (Darwin = mac, xdg-open = linux).
                 opener = "open" if sys.platform == "darwin" else "xdg-open"
                 subprocess.call([opener, self.file_path])
-        except (AttributeError, TypeError):
+        except (AttributeError, TypeError):  # Added TypeError, corrects error when filename is missing
             self.ids.play.text = "File Not Selected"
 
     def clear(self):
